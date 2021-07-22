@@ -43,7 +43,7 @@ resource "aws_sns_topic" "db_alarms_56" {
 }
 
 module "aurora_db_56" {
-  source  = "claranet/aurora/aws"
+  source  = "jland/aurora/aws"
   version = "x.y.z"
 
   name                                = "test-aurora-db-56"
@@ -89,7 +89,7 @@ resource "aws_sns_topic" "db_alarms" {
 }
 
 module "aurora_db_57" {
-  source  = "claranet/aurora/aws"
+  source  = "jland/aurora/aws"
   version = "x.y.z"
 
   engine                              = "aurora-mysql"
@@ -136,7 +136,7 @@ resource "aws_sns_topic" "db_alarms_postgres96" {
 }
 
 module "aurora_db_postgres96" {
-  source  = "claranet/aurora/aws"
+  source  = "jland/oracle/aws"
   version = "x.y.z"
 
   engine                              = "aurora-postgresql"
