@@ -20,7 +20,7 @@ resource "aws_rds_cluster_instance" "cluster_instance_0" {
   count      = var.enabled ? 1 : 0
   depends_on = [aws_iam_role_policy_attachment.rds-enhanced-monitoring-policy-attach]
 
-  identifier                   = var.identifier_prefix != "" ? format("%s-node-0", var.identifier_prefix) : format("%s-aurora-node-0", var.envname)
+  identifier                   = var.identifier_prefix != "" ? format("%s-node-0", var.identifier_prefix) : format("%s-oracle-node-0", var.envname)
   cluster_identifier           = aws_rds_cluster.default[0].id
   engine                       = var.engine
   engine_version               = var.engine-version
@@ -48,7 +48,7 @@ resource "aws_rds_cluster_instance" "cluster_instance_n" {
   count                        = var.enabled ? var.replica_scale_enabled ? var.replica_scale_min : var.replica_count : 0
   engine                       = var.engine
   engine_version               = var.engine-version
-  identifier                   = var.identifier_prefix != "" ? format("%s-node-%d", var.identifier_prefix, count.index + 1) : format("%s-aurora-node-%d", var.envname, count.index + 1)
+  identifier                   = var.identifier_prefix != "" ? format("%s-node-%d", var.identifier_prefix, count.index + 1) : format("%s-oracle-node-%d", var.envname, count.index + 1)
   cluster_identifier           = aws_rds_cluster.default[0].id
   instance_class               = var.instance_type
   publicly_accessible          = var.publicly_accessible
@@ -71,7 +71,7 @@ resource "aws_rds_cluster_instance" "cluster_instance_n" {
 // Create DB Cluster
 resource "aws_rds_cluster" "default" {
   count              = var.enabled ? 1 : 0
-  cluster_identifier = var.identifier_prefix != "" ? format("%s-cluster", var.identifier_prefix) : format("%s-aurora-cluster", var.envname)
+  cluster_identifier = var.identifier_prefix != "" ? format("%s-cluster", var.identifier_prefix) : format("%s-oracle-cluster", var.envname)
   availability_zones = var.azs
   engine             = var.engine
 

@@ -29,8 +29,9 @@ variable "identifier_prefix" {
 }
 
 variable "azs" {
-  type        = list(string)
-  description = "List of AZs to use"
+  # type        = list(string)
+  type        = string
+  description = "AZ to use"
 }
 
 variable "replica_count" {
@@ -98,7 +99,7 @@ variable "preferred_maintenance_window" {
 
 variable "port" {
   type        = string
-  default     = "3306"
+  default     = "1521"
   description = "The port on which to accept connections"
 }
 
@@ -122,13 +123,13 @@ variable "auto_minor_version_upgrade" {
 
 variable "db_parameter_group_name" {
   type        = string
-  default     = "default.aurora5.6"
+  default     = "default.oracle19c"
   description = "The name of a DB parameter group to use"
 }
 
 variable "db_cluster_parameter_group_name" {
   type        = string
-  default     = "default.aurora5.6"
+  default     = "default.oracle19c"
   description = "The name of a DB Cluster parameter group to use"
 }
 

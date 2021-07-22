@@ -1,12 +1,12 @@
-# Terraform-AWS-Aurora-RDS
+# Terraform-AWS-Oracle-RDS
 
-AWS Aurora DB Cluster & Instance(s) Terraform Module.
+AWS Oracle DB Cluster & Instance(s) Terraform Module.
 
 This IaC spawns the following:
 
  - A DB subnet group
- - An Aurora DB cluster
- - An Aurora DB instance + 'n' number of additional instances
+ - An Oracle DB cluster
+ - An Oracle DB instance + 'n' number of additional instances
  - Optionally RDS 'Enhanced Monitoring' + associated required IAM role/policy (by simply setting the `monitoring_interval` param to > `0`
  - Optionally sensible alarms to SNS (high CPU, high connections, slow replication)
  - Optionally configure autoscaling for read replicas (MySQL clusters only)
@@ -35,146 +35,6 @@ AWS doesn't automatically remove RDS instances created from autoscaling when you
 Changing the parameter group in use requires a restart of the DB cluster, modifying parameters within a group  
 may not (depending on the parameter being altered)
 
-### Aurora 1.x (MySQL 5.6)
-
-```hcl
-resource "aws_sns_topic" "db_alarms_56" {
-  name = "aurora-db-alarms-56"
-}
-
-module "aurora_db_56" {
-  source  = "jland/aurora/aws"
-  version = "x.y.z"
-
-  name                                = "test-aurora-db-56"
-  envname                             = "test56"
-  envtype                             = "test"
-  subnets                             = module.vpc.private_subnet_ids
-  azs                                 = ["us-east-1a", "us-east-1b", "us-east-1c"]
-  replica_count                       = "1"
-  security_groups                     = [aws_security_group.allow_all.id]
-  instance_type                       = "db.t2.medium"
-  username                            = "root"
-  password                            = "changeme"
-  backup_retention_period             = "5"
-  final_snapshot_identifier           = "final-db-snapshot-prod"
-  storage_encrypted                   = "true"
-  apply_immediately                   = "true"
-  monitoring_interval                 = "10"
-  cw_alarms                           = "true"
-  cw_sns_topic                        = aws_sns_topic.db_alarms_56.id
-  db_parameter_group_name             = aws_db_parameter_group.aurora_db_56_parameter_group.id
-  db_cluster_parameter_group_name     = aws_rds_cluster_parameter_group.aurora_cluster_56_parameter_group.id
-  iam_database_authentication_enabled = "true"
-}
-
-resource "aws_db_parameter_group" "aurora_db_56_parameter_group" {
-  name        = "test-aurora-db-56-parameter-group"
-  family      = "aurora5.6"
-  description = "test-aurora-db-56-parameter-group"
-}
-
-resource "aws_rds_cluster_parameter_group" "aurora_cluster_56_parameter_group" {
-  name        = "test-aurora-56-cluster-parameter-group"
-  family      = "aurora5.6"
-  description = "test-aurora-56-cluster-parameter-group"
-}
-```
-
-### Aurora 2.x (MySQL 5.7)
-
-```hcl
-resource "aws_sns_topic" "db_alarms" {
-  name = "aurora-db-alarms"
-}
-
-module "aurora_db_57" {
-  source  = "jland/aurora/aws"
-  version = "x.y.z"
-
-  engine                              = "aurora-mysql"
-  engine-version                      = "5.7.12"
-  name                                = "test-aurora-db-57"
-  envname                             = "test-57"
-  envtype                             = "test"
-  subnets                             = module.vpc.private_subnet_ids
-  azs                                 = ["us-east-1a", "us-east-1b", "us-east-1c"]
-  replica_count                       = "1"
-  security_groups                     = [aws_security_group.allow_all.id]
-  instance_type                       = "db.t2.medium"
-  username                            = "root"
-  password                            = "changeme"
-  backup_retention_period             = "5"
-  final_snapshot_identifier           = "final-db-snapshot-prod"
-  storage_encrypted                   = "true"
-  apply_immediately                   = "true"
-  monitoring_interval                 = "10"
-  cw_alarms                           = "true"
-  cw_sns_topic                        = aws_sns_topic.db_alarms.id
-  db_parameter_group_name             = aws_db_parameter_group.aurora_db_57_parameter_group.id
-  db_cluster_parameter_group_name     = aws_rds_cluster_parameter_group.aurora_57_cluster_parameter_group.id
-  iam_database_authentication_enabled = "true"
-}
-
-resource "aws_db_parameter_group" "aurora_db_57_parameter_group" {
-  name        = "test-aurora-db-57-parameter-group"
-  family      = "aurora-mysql5.7"
-  description = "test-aurora-db-57-parameter-group"
-}
-
-resource "aws_rds_cluster_parameter_group" "aurora_57_cluster_parameter_group" {
-  name        = "test-aurora-57-cluster-parameter-group"
-  family      = "aurora-mysql5.7"
-  description = "test-aurora-57-cluster-parameter-group"
-}
-```
-### Aurora PostgreSQL
-
-```hcl
-resource "aws_sns_topic" "db_alarms_postgres96" {
-  name = "aurora-db-alarms-postgres96"
-}
-
-module "aurora_db_postgres96" {
-  source  = "jland/oracle/aws"
-  version = "x.y.z"
-
-  engine                              = "aurora-postgresql"
-  engine-version                      = "9.6.6"
-  name                                = "test-aurora-db-postgres96"
-  envname                             = "test-pg96"
-  envtype                             = "test"
-  subnets                             = module.vpc.private_subnet_ids
-  azs                                 = ["us-east-1a", "us-east-1b", "us-east-1c"]
-  replica_count                       = "1"
-  security_groups                     = [aws_security_group.allow_all.id]
-  instance_type                       = "db.r4.large"
-  username                            = "root"
-  password                            = "changeme"
-  backup_retention_period             = "5"
-  final_snapshot_identifier           = "final-db-snapshot-prod"
-  storage_encrypted                   = "true"
-  apply_immediately                   = "true"
-  monitoring_interval                 = "10"
-  cw_alarms                           = "true"
-  cw_sns_topic                        = aws_sns_topic.db_alarms_postgres96.id
-  db_parameter_group_name             = aws_db_parameter_group.aurora_db_postgres96_parameter_group.id
-  db_cluster_parameter_group_name     = aws_rds_cluster_parameter_group.aurora_cluster_postgres96_parameter_group.id
-  iam_database_authentication_enabled = "false"
-}
-
-resource "aws_db_parameter_group" "aurora_db_postgres96_parameter_group" {
-  name        = "test-aurora-db-postgres96-parameter-group"
-  family      = "aurora-postgresql9.6"
-  description = "test-aurora-db-postgres96-parameter-group"
-}
-
-resource "aws_rds_cluster_parameter_group" "aurora_cluster_postgres96_parameter_group" {
-  name        = "test-aurora-postgres96-cluster-parameter-group"
-  family      = "aurora-postgresql9.6"
-  description = "test-aurora-postgres96-cluster-parameter-group"
-}
-```
 
 <!--
 The Inputs and Outputs sections below are automatically generated in the master branch,
@@ -202,7 +62,7 @@ so don't bother manually changing them.
 | cw\_eval\_period\_replica\_lag | Evaluation period for the DB replica lag alarm | `string` | `"5"` | no |
 | cw\_max\_conns | Connection count beyond which to trigger a CloudWatch alarm | `string` | `"500"` | no |
 | cw\_max\_cpu | CPU threshold above which to alarm | `string` | `"85"` | no |
-| cw\_max\_replica\_lag | Maximum Aurora replica lag in milliseconds above which to alarm | `string` | `"2000"` | no |
+| cw\_max\_replica\_lag | Maximum Oracle replica lag in milliseconds above which to alarm | `string` | `"2000"` | no |
 | cw\_sns\_topic | An SNS topic to publish CloudWatch alarms to | `string` | `"false"` | no |
 | db\_cluster\_parameter\_group\_name | The name of a DB Cluster parameter group to use | `string` | `"default.aurora5.6"` | no |
 | db\_parameter\_group\_name | The name of a DB parameter group to use | `string` | `"default.aurora5.6"` | no |
@@ -216,7 +76,7 @@ so don't bother manually changing them.
 | kms\_key\_id | Specify the KMS Key to use for encryption | `string` | `""` | no |
 | monitoring\_interval | The interval (seconds) between points when Enhanced Monitoring metrics are collected | `string` | `0` | no |
 | performance\_insights\_enabled | Whether to enable Performance Insights | `string` | `false` | no |
-| port | The port on which to accept connections | `string` | `"3306"` | no |
+| port | The port on which to accept connections | `string` | `"1521"` | no |
 | preferred\_backup\_window | When to perform DB backups | `string` | `"02:00-03:00"` | no |
 | preferred\_maintenance\_window | When to perform DB maintenance | `string` | `"sun:05:00-sun:06:00"` | no |
 | publicly\_accessible | Whether the DB should have a public IP address | `string` | `"false"` | no |

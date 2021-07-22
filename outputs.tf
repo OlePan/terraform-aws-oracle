@@ -11,7 +11,7 @@ output "all_instance_endpoints_list" {
   )]
 }
 
-// A read-only endpoint for the Aurora cluster, automatically load-balanced across replicas
+// A read-only endpoint for the Oracle cluster, automatically load-balanced across replicas
 output "reader_endpoint" {
   value = join("", aws_rds_cluster.default.*.reader_endpoint)
 }

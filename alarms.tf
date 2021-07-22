@@ -80,10 +80,10 @@ resource "aws_cloudwatch_metric_alarm" "alarm_rds_CPU_reader" {
 
 resource "aws_cloudwatch_metric_alarm" "alarm_rds_replica_lag" {
   count               = var.enabled && var.cw_alarms && var.replica_count > 0 ? 1 : 0
-  alarm_name          = "${aws_rds_cluster.default[0].id}-alarm-rds-reader-AuroraReplicaLag"
+  alarm_name          = "${aws_rds_cluster.default[0].id}-alarm-rds-reader-OracleReplicaLag"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = var.cw_eval_period_replica_lag
-  metric_name         = "AuroraReplicaLag"
+  metric_name         = "OracleReplicaLag"
   namespace           = "AWS/RDS"
   period              = "60"
   statistic           = "Maximum"
