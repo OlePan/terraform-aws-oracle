@@ -50,7 +50,7 @@ module "aurora_db_56" {
   envname                             = "test56"
   envtype                             = "test"
   subnets                             = module.vpc.private_subnet_ids
-  azs                                 = ["eu-west-1a", "eu-west-1b", "eu-west-1c"]
+  azs                                 = ["us-east-1a", "us-east-1b", "us-east-1c"]
   replica_count                       = "1"
   security_groups                     = [aws_security_group.allow_all.id]
   instance_type                       = "db.t2.medium"
@@ -98,7 +98,7 @@ module "aurora_db_57" {
   envname                             = "test-57"
   envtype                             = "test"
   subnets                             = module.vpc.private_subnet_ids
-  azs                                 = ["eu-west-1a", "eu-west-1b", "eu-west-1c"]
+  azs                                 = ["us-east-1a", "us-east-1b", "us-east-1c"]
   replica_count                       = "1"
   security_groups                     = [aws_security_group.allow_all.id]
   instance_type                       = "db.t2.medium"
@@ -146,7 +146,7 @@ module "aurora_db_postgres96" {
   envname                             = "test-pg96"
   envtype                             = "test"
   subnets                             = module.vpc.private_subnet_ids
-  azs                                 = ["eu-west-1a", "eu-west-1b", "eu-west-1c"]
+  azs                                 = ["us-east-1a", "us-east-1b", "us-east-1c"]
   replica_count                       = "1"
   security_groups                     = [aws_security_group.allow_all.id]
   instance_type                       = "db.r4.large"
