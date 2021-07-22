@@ -128,7 +128,6 @@ resource "aws_rds_cluster_parameter_group" "aurora_57_cluster_parameter_group" {
   description = "test-aurora-57-cluster-parameter-group"
 }
 ```
-
 ### Aurora PostgreSQL
 
 ```hcl
@@ -241,8 +240,6 @@ so don't bother manually changing them.
 | cluster\_endpoint | The 'writer' endpoint for the cluster |
 | cluster\_identifier | The ID of the RDS Cluster |
 | reader\_endpoint | A read-only endpoint for the Aurora cluster, automatically load-balanced across replicas |
-
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
 ## Contributing
 
