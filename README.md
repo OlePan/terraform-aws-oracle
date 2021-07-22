@@ -186,6 +186,7 @@ so don't bother manually changing them.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:-----:|
+| aws\_region | n/a | `string` | n/a | yes |
 | azs | List of AZs to use | `list(string)` | n/a | yes |
 | envname | Environment name (eg,test, stage or prod) | `string` | n/a | yes |
 | envtype | Environment type (eg,prod or nonprod) | `string` | n/a | yes |
@@ -207,7 +208,6 @@ so don't bother manually changing them.
 | db\_cluster\_parameter\_group\_name | The name of a DB Cluster parameter group to use | `string` | `"default.aurora5.6"` | no |
 | db\_parameter\_group\_name | The name of a DB parameter group to use | `string` | `"default.aurora5.6"` | no |
 | enabled | Whether the database resources should be created | `string` | `true` | no |
-| enabled\_cloudwatch\_logs\_exports | List of log types to export to CloudWatch Logs. If omitted, no logs will be exported. The following log types are supported: audit, error, general, slowquery, postgresql. | `list(string)` | `[]` | no |
 | engine | Aurora database engine type, currently aurora, aurora-mysql or aurora-postgresql | `string` | `"aurora"` | no |
 | engine-version | Aurora database engine version. | `string` | `"5.6.10a"` | no |
 | final\_snapshot\_identifier | The name to use when creating a final snapshot on cluster destroy, appends a random 8 digits to name to ensure it's unique too. | `string` | `"final"` | no |
@@ -221,7 +221,7 @@ so don't bother manually changing them.
 | preferred\_backup\_window | When to perform DB backups | `string` | `"02:00-03:00"` | no |
 | preferred\_maintenance\_window | When to perform DB maintenance | `string` | `"sun:05:00-sun:06:00"` | no |
 | publicly\_accessible | Whether the DB should have a public IP address | `string` | `"false"` | no |
-| replica\_count | Number of reader nodes to create.  If `replica_scale_enable` is `true`, the value of `replica_scale_min` is used instead. | `string` | `"0"` | no |
+| replica\_count | Number of reader nodes to create.  If `replica_scale_enable` is `true`, the value of `replica_scale_min` is used instead. | `string` | `"3"` | no |
 | replica\_scale\_cpu | CPU usage to trigger autoscaling at | `string` | `"70"` | no |
 | replica\_scale\_enabled | Whether to enable autoscaling for RDS Aurora (MySQL) read replicas | `string` | `false` | no |
 | replica\_scale\_in\_cooldown | Cooldown in seconds before allowing further scaling operations after a scale in | `string` | `"300"` | no |
